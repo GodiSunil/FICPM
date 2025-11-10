@@ -1,50 +1,82 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Poppins } from "next/font/google"
+"use client"
+
+import React, { useState, useEffect } from "react"
+import { Inter, Space_Grotesk, Roboto_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
-const poppins = Poppins({
+// Load Inter as primary font
+const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-poppins",
+  variable: "--font-sans",
+  display: 'swap',
+  adjustFontFallback: false,
 })
 
-export const metadata: Metadata = {
-  title: "FICPM - Federation of Indian Compostable Products Manufacturers",
-  description:
-    "Leading India's transition to sustainable compostable products. Uniting manufacturers, promoting innovation, and championing environmental responsibility.",
-  generator: "v0.app",
-  keywords: ["FICPM", "compostable products", "sustainable manufacturing", "India", "eco-friendly", "biodegradable"],
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
-  },
-}
+// Load Space Grotesk for headings
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-heading",
+  display: 'swap',
+  adjustFontFallback: false,
+})
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+// Load Roboto Mono as fallback for code/monospace
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: 'swap',
+  adjustFontFallback: false,
+})
+
+// Create a client component wrapper to handle client-side features
+function ClientLayout({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    // Don't render anything on the server
+    return null
+  }
+
   return (
-    <html lang="en" className="dark">
-      <body className={`${poppins.variable} font-sans antialiased`}>
+    <html lang="en" className="scroll-smooth">
+      <head>
+        <style jsx global>{`
+          :root {
+            --font-sans: ${inter.style.fontFamily};
+            --font-heading: ${spaceGrotesk.style.fontFamily};
+            --font-mono: ${robotoMono.style.fontFamily};
+          }
+          
+          h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+          }
+          
+          body {
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+          }
+          
+          code, pre, kbd, samp {
+            font-family: var(--font-mono);
+          }
+        `}</style>
+      </head>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} ${robotoMono.variable} font-sans antialiased text-foreground bg-background`}>
         <Header />
         <main className="pt-20">{children}</main>
         <Footer />
@@ -52,4 +84,33 @@ export default function RootLayout({
       </body>
     </html>
   )
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  // This is a workaround for the "use client" directive in the root layout
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    // Return a simple layout for the initial server render
+    return (
+      <html lang="en">
+        <body className={`${inter.variable} ${spaceGrotesk.variable} ${robotoMono.variable} font-sans antialiased text-foreground bg-background`}>
+          <Header />
+          <main className="pt-20">{children}</main>
+          <Footer />
+          <Analytics />
+        </body>
+      </html>
+    );
+  }
+
+  return <ClientLayout>{children}</ClientLayout>;
 }

@@ -9,20 +9,10 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative py-32 md:py-40 overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center" 
-          style={{
-            backgroundImage: "url('/sustainability-conference-hall-with-attendees.jpg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        >
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60" />
-        </div>
-        <div className="absolute top-20 right-10 w-96 h-96 bg-eco-primary/20 rounded-full blur-[120px]" />
+      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-eco-dark/95 via-eco-primary/10 to-eco-accent/20">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/30 to-eco-dark/20" />
+        <div className="absolute top-20 right-10 w-96 h-96 bg-eco-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-eco-accent/10 rounded-full blur-[120px]" />
 
         <div className="relative z-10 container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center space-y-6">
@@ -31,7 +21,7 @@ export default function AboutPage() {
               <span className="text-sm text-eco-primary font-medium">About FICPM</span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold text-balance text-white">
+            <h1 className="text-5xl md:text-6xl font-bold text-balance">
               Pioneering India's
               <span className="block mt-2 bg-gradient-to-r from-eco-primary to-eco-accent bg-clip-text text-transparent">
                 Sustainable Revolution

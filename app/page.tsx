@@ -16,48 +16,27 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background image with overlay */}
-        <div className="absolute inset-0">
-          <div 
-            className="w-full h-full bg-cover bg-center"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80)',
-              backgroundPosition: 'center',
-              backgroundSize: 'cover'
-            }}
-          >
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-          </div>
-        </div>
-        {/* Animated background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/50 to-eco-dark/20" />
+      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-eco-dark/95 via-eco-primary/10 to-eco-accent/20">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/30 to-eco-dark/20" />
+        <div className="absolute top-20 right-10 w-96 h-96 bg-eco-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-eco-accent/10 rounded-full blur-[120px]" />
 
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-eco-primary/10 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-eco-accent/10 rounded-full blur-[120px] animate-pulse delay-1000" />
-
-        <div
-          className={`relative z-10 container mx-auto px-4 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-        >
-          <div className="max-w-5xl mx-auto text-center space-y-8">
+        <div className="relative z-10 container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-eco-primary/30 bg-eco-primary/5 backdrop-blur-sm">
               <Leaf className="w-4 h-4 text-eco-primary" />
-              <span className="text-sm text-white font-medium">
-                Federation of Indian Compostable Products Manufacturers
-              </span>
+              <span className="text-sm text-eco-primary font-medium">Federation of Indian Compostable Products Manufacturers</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold text-balance leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-balance">
               Leading India's
-              <span className="block mt-2 bg-gradient-to-r from-eco-primary via-eco-accent to-eco-primary bg-clip-text text-transparent animate-gradient">
+              <span className="block mt-2 bg-gradient-to-r from-eco-primary to-eco-accent bg-clip-text text-transparent">
                 Sustainable Future
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto text-pretty leading-relaxed">
-              Uniting manufacturers, promoting innovation, and championing compostable products for a cleaner, greener
-              India.
+            <p className="text-xl text-muted-foreground text-pretty leading-relaxed">
+              Uniting manufacturers, promoting innovation, and championing compostable products for a cleaner, greener India.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -80,13 +59,6 @@ export default function HomePage() {
                 <Link href="/about">Learn More</Link>
               </Button>
             </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-eco-primary/30 flex items-start justify-center p-2">
-            <div className="w-1.5 h-3 bg-eco-primary rounded-full animate-pulse" />
           </div>
         </div>
       </section>
