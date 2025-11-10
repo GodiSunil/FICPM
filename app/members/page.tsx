@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Users, Shield, TrendingUp, Building2, Award, CheckCircle2, User } from "lucide-react"
+import { ArrowRight, Users, Shield, TrendingUp, Building2, Award, CheckCircle2 } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 
 export default function MembersPage() {
@@ -202,43 +203,66 @@ export default function MembersPage() {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Leadership Team</h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-pretty">
-                Experienced leaders driving FICPM's mission forward
+                Dedicated leaders steering FICPM's vision and operations
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[
                 {
-                  name: "Dr. Rajesh Kumar",
+                  name: "V. Peraprasad",
                   role: "President",
-                  company: "EcoMaterials India",
+                  location: "Visakhapatnam"
                 },
                 {
-                  name: "Priya Sharma",
-                  role: "Vice President",
-                  company: "GreenPack Solutions",
+                  name: "S. Ramani",
+                  role: "General Secretary",
+                  location: "Hyderabad"
                 },
                 {
-                  name: "Amit Patel",
+                  name: "V. Narendra Kumar",
+                  role: "Joint Secretary",
+                  location: "Visakhapatnam"
+                },
+                {
+                  name: "Shaik Shaida Shareef",
                   role: "Treasurer",
-                  company: "SustainTech Manufacturing",
+                  location: "Hyderabad"
                 },
                 {
-                  name: "Dr. Meera Desai",
-                  role: "Secretary",
-                  company: "BioCompost Industries",
+                  name: "T. Hari Chaitanya",
+                  role: "EC Member",
+                  location: "Raichur, Karnataka"
                 },
-              ].map((leader, idx) => (
+                {
+                  name: "D. Karthik Sai",
+                  role: "EC Member",
+                  location: "West Godavari"
+                },
+                {
+                  name: "Neha Agarwal",
+                  role: "EC Member",
+                  location: "Rangareddy, Telangana"
+                }
+              ].map((member, idx) => (
                 <Card
                   key={idx}
-                  className="group p-6 text-center bg-card border-border/50 hover:border-eco-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-eco-primary/10 hover:-translate-y-1"
+                  className="group p-6 text-center bg-card border-border/50 hover:border-eco-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-eco-primary/10 hover:-translate-y-1 h-full flex flex-col"
                 >
-                  <div className="mb-4 mx-auto w-24 h-24 rounded-full bg-eco-primary/10 flex items-center justify-center group-hover:bg-eco-primary/20 transition-colors">
-                    <User className="w-12 h-12 text-eco-primary" />
+                  <div className="flex-1">
+                    <div className="mb-4 mx-auto w-24 h-24 rounded-full bg-eco-primary/10 overflow-hidden border-2 border-eco-primary/20 group-hover:border-eco-primary/50 transition-colors">
+                      <Image
+                        src={`/mem${idx + 1}.png`}
+                        alt={member.name}
+                        width={96}
+                        height={96}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <h3 className="text-lg font-bold mb-1">{member.name}</h3>
+                    <p className="text-sm text-eco-primary font-medium mb-1">{member.role}</p>
+                    <p className="text-sm text-muted-foreground">{member.location}</p>
                   </div>
-                  <h3 className="text-lg font-bold mb-1">{leader.name}</h3>
-                  <p className="text-sm text-eco-primary font-medium mb-2">{leader.role}</p>
-                  <p className="text-sm text-muted-foreground">{leader.company}</p>
                 </Card>
               ))}
             </div>
