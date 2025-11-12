@@ -71,7 +71,6 @@ export function Header() {
                 )}
               >
                 {item.name}
-                {item.name === "Resources" && <ChevronDown className="w-4 h-4 ml-0.5" />}
               </Link>
             ))}
           </nav>

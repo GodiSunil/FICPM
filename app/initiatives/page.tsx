@@ -354,8 +354,7 @@ export default function InitiativesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-eco-dark to-background" />
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#dbeee3' }}>
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
 
         <div className="relative z-10 container mx-auto px-4">
