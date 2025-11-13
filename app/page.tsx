@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div className="bg-background">
       {/* Hero Section - Full Viewport Height */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-eco-dark/95 via-eco-primary/10 to-eco-accent/20 pb-[420px]">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-eco-dark/95 via-eco-primary/10 to-eco-accent/20 pb-[170px] sm:pb-[420px]">
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/10 to-eco-dark/10" />
         <div className="absolute top-20 right-10 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-eco-primary/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-20 left-10 w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-eco-accent/10 rounded-full blur-[120px]" />
@@ -81,7 +81,7 @@ export default function HomePage() {
         </div>
          <img
          src="/bg.png"
-          className="absolute left-0 bottom-[-150px]"
+          className="absolute left-0 bottom-0 sm:bottom-[-150px]"
           style={{
             width: '100%',
             objectFit: 'cover'
