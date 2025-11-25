@@ -93,10 +93,11 @@ export default function MembersPage() {
               ].map((membership, idx) => (
                 <Card
                   key={idx}
-                  className={`group p-8 bg-card border-border/50 hover:border-eco-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-eco-primary/10 hover:-translate-y-1 ${
+                  className={`group relative p-8 bg-card border-2 border-eco-dark/20 hover:border-eco-primary/50 transition-all duration-500 hover:shadow-lg hover:shadow-eco-primary/10 hover:-translate-y-1 overflow-hidden ${
                     idx === 0 ? "ring-2 ring-eco-primary/20" : ""
                   }`}
                 >
+                  <div className="absolute inset-0 bg-gradient-to-br from-eco-dark/5 to-eco-dark/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="flex items-start justify-between mb-6">
                     <div className="w-14 h-14 rounded-xl bg-eco-primary/10 flex items-center justify-center group-hover:bg-eco-primary/20 transition-colors">
                       <membership.icon className="w-7 h-7 text-eco-primary" />
@@ -118,15 +119,19 @@ export default function MembersPage() {
                     ))}
                   </div>
 
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full border-eco-primary/30 hover:bg-eco-primary/5 bg-transparent"
-                  >
-                    <Link href="/membership">
-                      Apply Now <ArrowRight className="ml-2 w-4 h-4" />
-                    </Link>
-                  </Button>
+                  <div className="relative group/button">
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-eco-primary to-eco-accent rounded-lg blur opacity-0 group-hover/button:opacity-75 group-hover/button:animate-tilt transition duration-1000 group-hover/button:duration-200"></div>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="relative w-full bg-background border-2 border-eco-dark/20 hover:border-eco-primary/50 hover:bg-eco-primary/5 transition-all duration-300 group/btn"
+                    >
+                      <Link href="/membership" className="relative z-10 flex items-center justify-center">
+                        <span className="group-hover/btn:translate-x-1 transition-transform duration-300">Apply Now</span>
+                        <ArrowRight className="ml-2 w-4 h-4 opacity-0 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all duration-300" />
+                      </Link>
+                    </Button>
+                  </div>
                 </Card>
               ))}
             </div>

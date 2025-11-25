@@ -2,9 +2,253 @@
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { ArrowRight, Leaf, Users, FileText, Calendar, Shield, Target } from "lucide-react"
+import { ArrowRight, Users, FileText, Calendar, Shield, Target, MapPin, Factory, Leaf } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+
+const StatCard = ({ value, label, icon, index }) => {
+  return (
+    <motion.div 
+      className="group relative p-8 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-eco-primary/20 overflow-hidden"
+      whileHover={{ y: -5 }}
+      initial={{ opacity: 0, y: 20 }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        visible: { 
+          opacity: 1, 
+          y: 0,
+          transition: { 
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+            delay: 0.2 + (index * 0.1)
+          } 
+        }
+      }}
+    >
+      {/* Animated border on hover */}
+      <motion.div 
+        className="absolute inset-0 border-t-2 border-eco-primary/0 group-hover:border-eco-primary/100 transition-all duration-500"
+        initial={false}
+      />
+      
+      {/* Icon with subtle float animation */}
+      <motion.div 
+        className="w-16 h-16 mx-auto mb-6 rounded-xl bg-eco-primary/5 flex items-center justify-center text-eco-primary group-hover:bg-eco-primary/10 transition-colors duration-300"
+        animate={{
+          y: [0, -5, 0],
+        }}
+        transition={{
+          duration: 4,
+          ease: "easeInOut",
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      >
+        {icon}
+      </motion.div>
+      
+      {/* Animated counter */}
+      <motion.div 
+        className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-eco-primary to-eco-accent bg-clip-text text-transparent mb-3"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0,
+          transition: { 
+            delay: 0.3 + (index * 0.1),
+            duration: 0.8 
+          } 
+        }}
+      >
+        <AnimatedCounter value={value} />
+      </motion.div>
+      
+      <p className="text-muted-foreground font-medium text-sm sm:text-base">
+        {label}
+      </p>
+    </motion.div>
+  )
+}
+
+// Initiative Card Component
+const InitiativeCard = ({ 
+  icon: Icon, 
+  title, 
+  date, 
+  description, 
+  colors,
+  index 
+}) => {
+  const [isHovered, setIsHovered] = useState(false)
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ 
+        opacity: 1, 
+        y: 0,
+        transition: { 
+          delay: 0.1 * index,
+          duration: 0.6,
+          ease: [0.16, 1, 0.3, 1]
+        } 
+      }}
+      viewport={{ once: true, margin: "-50px" }}
+      className="relative"
+    >
+      <motion.div
+        className={`absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${colors.hover}`}
+        animate={{
+          opacity: isHovered ? 1 : 0,
+        }}
+      />
+      
+      <Card
+        className={`relative overflow-hidden p-8 h-full border ${colors.border} bg-gradient-to-br ${colors.bg} transition-all duration-500 group`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <motion.div 
+          className="absolute -right-6 -top-6 h-32 w-32 rounded-full opacity-50 blur-3xl transition-opacity duration-500"
+          style={{
+            backgroundColor: colors.icon.replace('text-', '')
+          }}
+          animate={{
+            scale: isHovered ? [1, 1.2, 1] : 1,
+            opacity: isHovered ? 0.7 : 0.5,
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut"
+          }}
+        />
+        
+        <div className="relative z-10">
+          <div className="flex items-start gap-4 mb-6">
+            <motion.div 
+              className={`w-14 h-14 rounded-xl ${colors.iconBg} backdrop-blur-sm flex items-center justify-center shadow-sm`}
+              animate={{
+                y: isHovered ? [0, -5, 0] : 0,
+                rotate: isHovered ? [0, 5, -5, 0] : 0,
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "easeInOut"
+              }}
+            >
+              <Icon className={`w-6 h-6 ${colors.icon}`} />
+            </motion.div>
+            
+            <div className="flex-1">
+              <motion.div 
+                className="inline-block"
+                whileHover={{ x: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <span className={`text-xs font-medium ${colors.date} px-3 py-1.5 rounded-full backdrop-blur-sm inline-block mb-2`}>
+                  {date}
+                </span>
+              </motion.div>
+              
+              <motion.h3 
+                className="text-xl font-semibold mb-3 text-gray-800"
+                initial={{ y: 0 }}
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                {title}
+              </motion.h3>
+            </div>
+          </div>
+          
+          <motion.p 
+            className="text-gray-600 leading-relaxed mb-6"
+            initial={{ opacity: 0.9 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {description}
+          </motion.p>
+          
+          <motion.div
+            whileHover={{ x: 5 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Button
+              variant="ghost"
+              className={`mt-4 p-0 h-auto ${colors.icon} hover:bg-transparent`}
+            >
+              <span className="relative flex items-center">
+                Learn More
+                <motion.span
+                  className="ml-2"
+                  animate={{
+                    x: isHovered ? [0, 4, 0] : 0,
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "loop"
+                  }}
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </motion.span>
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${colors.icon} transition-all duration-300 ${isHovered ? 'w-full' : 'w-0'}`}></span>
+              </span>
+            </Button>
+          </motion.div>
+        </div>
+      </Card>
+    </motion.div>
+  )
+}
+
+const AnimatedCounter = ({ value }) => {
+  const [displayValue, setDisplayValue] = useState(0)
+  
+  useEffect(() => {
+    const numValue = parseInt(value.replace(/\D/g, ''))
+    if (isNaN(numValue)) {
+      setDisplayValue(value)
+      return
+    }
+    
+    const duration = 2000 // ms
+    const frameDuration = 1000 / 60 // 60fps
+    const totalFrames = Math.round(duration / frameDuration)
+    const easeOutQuad = t => t * (2 - t)
+    
+    let frame = 0
+    const countTo = numValue
+    
+    const counter = setInterval(() => {
+      frame++
+      const progress = easeOutQuad(frame / totalFrames)
+      const currentCount = Math.round(countTo * progress)
+      
+      if (parseInt(displayValue) !== currentCount) {
+        setDisplayValue(currentCount)
+      }
+      
+      if (frame === totalFrames) {
+        clearInterval(counter)
+      }
+    }, frameDuration)
+    
+    return () => clearInterval(counter)
+  }, [value])
+  
+  return (
+    <span>
+      {value.includes('%') ? `${displayValue}%` : `${displayValue}+`}
+    </span>
+  )
+}
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false)
@@ -146,126 +390,214 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 bg-[#f9f9f9]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8">
-              {[
-                { value: "150+", label: "Member Companies" },
-                { value: "10+", label: "States Represented" },
-                { value: "50K+", label: "Tons Annual Production" },
-                { value: "100%", label: "Commitment to Sustainability" },
-              ].map((stat, idx) => (
-                <div key={idx} className="text-center group">
-                  <div className="mb-3">
-                    <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-eco-primary to-eco-accent bg-clip-text text-transparent group-hover:scale-110 inline-block transition-transform">
-                      {stat.value}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground font-medium">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+      <section className="py-24 bg-gradient-to-b from-background to-[#f9f9f9] relative overflow-hidden">
+        {/* Animated background elements */}
+        <motion.div 
+          className="absolute inset-0 opacity-5 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.1 }}
+          transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
+        >
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-eco-primary rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
+          <div className="absolute top-1/2 right-1/4 w-72 h-72 bg-eco-accent rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
+          <div className="absolute bottom-1/3 left-2/3 w-80 h-80 bg-eco-dark rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000" />
+        </motion.div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="max-w-6xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: { 
+                  staggerChildren: 0.2,
+                  delayChildren: 0.3
+                } 
+              }
+            }}
+          >
+            <motion.div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <StatCard 
+                value="150+" 
+                label="Member Companies"
+                icon={<Users className="w-8 h-8" />}
+                index={0}
+              />
+              <StatCard 
+                value="10+" 
+                label="States Represented"
+                icon={<MapPin className="w-8 h-8" />}
+                index={1}
+              />
+              <StatCard 
+                value="50K+" 
+                label="Tons Annual Production"
+                icon={<Factory className="w-8 h-8" />}
+                index={2}
+              />
+              <StatCard 
+                value="100%" 
+                label="Commitment to Sustainability"
+                icon={<Leaf className="w-8 h-8" />}
+                index={3}
+              />
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Initiatives Preview */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-balance">Key Initiatives</h2>
+      <section className="py-24 relative overflow-hidden">
+        {/* Animated background elements */}
+        <motion.div 
+          className="absolute inset-0 opacity-5 pointer-events-none"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.1 }}
+          transition={{ duration: 2 }}
+          viewport={{ once: true }}
+        >
+          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-amber-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob" />
+          <div className="absolute bottom-1/3 left-1/3 w-72 h-72 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" />
+        </motion.div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="max-w-6xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { 
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.2
+                }
+              }
+            }}
+          >
+            <div className="flex flex-col lg:flex-row items-center justify-between mb-12">
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { duration: 0.6 }
+                  }
+                }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-balance bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                  Key Initiatives
+                </h2>
                 <p className="text-xl text-muted-foreground text-pretty">
                   Driving change through action and collaboration
                 </p>
-              </div>
-              <Button
-                asChild
-                variant="outline"
-                className="hidden md:inline-flex border-eco-primary/30 hover:bg-eco-primary/5 bg-transparent"
+              </motion.div>
+              
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { 
+                      delay: 0.2,
+                      duration: 0.6 
+                    }
+                  }
+                }}
+                className="hidden md:block"
               >
-                <Link href="/initiatives">
-                  View All
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Link>
-              </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="group border-eco-primary/30 hover:bg-eco-primary/5 bg-transparent"
+                >
+                  <Link href="/initiatives" className="relative overflow-hidden">
+                    <span className="relative z-10 flex items-center">
+                      View All
+                      <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </Link>
+                </Button>
+              </motion.div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <motion.div className="grid md:grid-cols-2 gap-8">
               {[
                 {
                   icon: Calendar,
                   title: "Annual Summit 2025",
                   date: "March 2025",
                   description: "Join industry leaders, policymakers, and innovators at our flagship event focused on the future of compostable materials.",
-                  bgColor: "from-amber-50 to-orange-50",
-                  iconBg: "bg-amber-100/80",
-                  iconColor: "text-amber-600",
-                  dateColor: "bg-amber-500/10 text-amber-700",
-                  borderColor: "border-amber-200",
-                  buttonHover: "hover:bg-amber-500/10"
+                  colors: {
+                    bg: "from-amber-50 to-orange-50",
+                    iconBg: "bg-amber-100/80",
+                    icon: "text-amber-600",
+                    date: "bg-amber-500/10 text-amber-700",
+                    border: "border-amber-200",
+                    hover: "hover:shadow-amber-200/40"
+                  }
                 },
                 {
                   icon: FileText,
                   title: "Policy Framework Development",
                   date: "Ongoing",
                   description: "Collaborating with government bodies to establish comprehensive guidelines for compostable product certification and standards.",
-                  bgColor: "from-emerald-50 to-teal-50",
-                  iconBg: "bg-emerald-100/80",
-                  iconColor: "text-emerald-600",
-                  dateColor: "bg-emerald-500/10 text-emerald-700",
-                  borderColor: "border-emerald-200",
-                  buttonHover: "hover:bg-emerald-500/10"
+                  colors: {
+                    bg: "from-emerald-50 to-teal-50",
+                    iconBg: "bg-emerald-100/80",
+                    icon: "text-emerald-600",
+                    date: "bg-emerald-500/10 text-emerald-700",
+                    border: "border-emerald-200",
+                    hover: "hover:shadow-emerald-200/40"
+                  }
                 },
               ].map((initiative, idx) => (
-                <Card
+                <InitiativeCard 
                   key={idx}
-                  className={`group relative overflow-hidden p-8 transition-all duration-500 hover:-translate-y-1 border ${initiative.borderColor} bg-gradient-to-br ${initiative.bgColor} hover:shadow-lg hover:shadow-${initiative.iconColor.split('-')[1]}/5`}
-                >
-                  {/* Decorative element */}
-                  <div className={`absolute -right-6 -top-6 h-32 w-32 rounded-full ${initiative.iconColor}/10 blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500`}></div>
-                  
-                  <div className="flex items-start gap-4 mb-6 relative z-10">
-                    <div className={`w-14 h-14 rounded-xl ${initiative.iconBg} backdrop-blur-sm flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm`}>
-                      <initiative.icon className={`w-6 h-6 ${initiative.iconColor}`} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`text-xs font-medium ${initiative.dateColor} px-3 py-1.5 rounded-full backdrop-blur-sm`}>
-                          {initiative.date}
-                        </span>
-                      </div>
-                      <h3 className="text-xl font-semibold mb-3 text-gray-800">{initiative.title}</h3>
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-600 leading-relaxed mb-6 relative z-10">{initiative.description}</p>
-                  
-                  <Button
-                    variant="ghost"
-                    className={`mt-4 p-0 h-auto relative z-10 ${initiative.iconColor} ${initiative.buttonHover} transition-colors duration-300 group/button`}
-                  >
-                    <span className="relative">
-                      Learn More
-                      <ArrowRight className="ml-1 w-4 h-4 inline-block transition-transform duration-300 group-hover/button:translate-x-1" />
-                      <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${initiative.iconColor} transition-all duration-300 group-hover/button:w-full`}></span>
-                    </span>
-                  </Button>
-                </Card>
+                  index={idx}
+                  {...initiative}
+                />
               ))}
-            </div>
+            </motion.div>
 
-            <div className="mt-8 md:hidden text-center">
-              <Button asChild variant="outline" className="border-eco-primary/30 hover:bg-eco-primary/5 bg-transparent">
-                <Link href="/initiatives">
-                  View All Initiatives
-                  <ArrowRight className="ml-2 w-4 h-4" />
+            <motion.div
+              className="mt-8 md:hidden text-center"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { 
+                    delay: 0.4,
+                    duration: 0.6 
+                  }
+                }
+              }}
+            >
+              <Button 
+                asChild 
+                variant="outline" 
+                className="group border-eco-primary/30 hover:bg-eco-primary/5 bg-transparent"
+              >
+                <Link href="/initiatives" className="relative overflow-hidden">
+                  <span className="relative z-10 flex items-center">
+                    View All Initiatives
+                    <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-amber-400/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Link>
               </Button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
